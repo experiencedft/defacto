@@ -2,5 +2,22 @@
   "name": "DeFacto Extension",
   "version": "0.1",
   "description": "Peer-review the internet",
+  "permissions": ["activeTab", "storage", "activeTab"],
+  "background": {
+    "scripts":["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/defacto_extension_16.png",
+      "48": "images/defacto_extension_48.png",
+      "128": "images/defacto_extension_128.png"
+    }
+  },
+  "icons": {
+    "16": "images/defacto_extension_16.png",
+    "48": "images/defacto_extension_48.png",
+    "128": "images/defacto_extension_128.png"  },
   "manifest_version": 2
 }
