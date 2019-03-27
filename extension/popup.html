@@ -13,23 +13,25 @@
     }
     body {
       width: 130px;
-      height: 170px;
+      height: 130px;
       margin-top: 30px;
       margin-left: 10px;
       margin-right: 10px;
     }
-    #submission {
+    button {
       width: 100%;
       height: 50px;
+      margin-bottom: 10px;
     }
   </style>
 
   <body>
     <!-- Default UI for surfers: button to submit web page for review-->
     <button type="button" name="submission" id="submission">Submit current tab</button>
-    <h3><a href="#">Login (reviewers)</a></h3>
-    <h3><a href="#">Sign up as a reveiwer</a></h3>
-    <script src="popup.js"></script>
+    <button type="button" name="review" id="review">Start reviewing</button>
+    <!--<h3><a href="#">Reviewer mode</a></h3>
+      <h3><a href="#">Sign up as a reveiwer</a></h3>-->
+    <script src="src/popup.js"></script>
   </body>
 
 </html>

@@ -2,7 +2,7 @@
   "name": "DeFacto Extension",
   "version": "0.1",
   "description": "Peer-review the internet",
-  "permissions": ["activeTab", "storage", "activeTab"],
+  "permissions": ["tabs", "activeTab", "storage"],
   "background": {
     "scripts":["background.js"],
     "persistent": false
