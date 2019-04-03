@@ -6,6 +6,77 @@
     <link rel="stylesheet" href="/styles/reviewTab.css">
   </head>
   <body>
+
+    <form class="" action="" method="post">
+      <h1>Assessment form</h1>
+      <section class="false-claims">
+        <h2>False claims</h2>
+        <div class="subassesment">
+          <p>
+            <label>Quote:</label>
+            <input type="text" name="quote" id="quote" placeholder="Paste here the quote you are disputing">
+          </p>
+          <p>
+            <label>Explanation:
+              <textarea class="explanation" placeholder="Provide the correct information"rows="8" cols="80"></textarea>
+            </label>
+          </p>
+          <p>
+            <label>Sources:
+              <input type="url" placeholder="http://mysource.com"class="source">
+            </label>
+            <button type="button" class="add-source">Add source</button>
+          </p>
+        </div>
+        <button type="button" id="add-subassessment">Add claim</button>
+      </section>
+
+      <section class="misleading-claims">
+        <h2>Misleading claims</h2>
+        <div class="subassesment">
+          <p>
+            <label>Quote:</label>
+            <input type="text" name="quote" id="quote" placeholder="Paste here the quote you are disputing">
+          </p>
+          <p>
+            <label>Explanation:
+              <textarea class="explanation" placeholder="Explain why this is misleading"rows="8" cols="80"></textarea>
+            </label>
+          </p>
+          <p>
+            <label>Sources:
+              <input type="url" placeholder="http://mysource.com"class="source">
+            </label>
+            <button type="button" class="add-source">Add source</button>
+          </p>
+        </div>
+        <button type="button" id="add-subassessment">Add claim</button>
+      </section>
+
+      <section class="fallacious-claims">
+        <h2>Fallacious claims</h2>
+        <p>Example of fallacies: straw man fallacy, false dilemma fallacy, ad hominem, circular argument...</p>
+        <div class="subassesment">
+          <p>
+            <label>Quote:</label>
+            <input type="text" name="quote" id="quote" placeholder="Paste here the quote you are disputing">
+          </p>
+          <p>
+            <label>Explanation:
+              <textarea class="explanation" placeholder="Explain why this is fallacious"rows="8" cols="80"></textarea>
+            </label>
+          </p>
+          <p>
+            <label>Sources:
+              <input type="url" placeholder="http://mysource.com"class="source">
+            </label>
+            <button type="button" class="add-source">Add source</button>
+          </p>
+        </div>
+        <button type="button" id="add-subassessment">Add claim</button>
+      </section>
+    </form>
+    
   </body>
   <!-- Populate new tab with relevant form -->
   <script src="src/reviewTab.js"></script>

@@ -1,22 +1,17 @@
-//Create parent form element.
+//Helper functions
 
-//action attribute = where to send (URL)
-//method attribute = HTTP method to use
-const form = document.createElement("form");
-form.setAttribute("action","/assessment-form");
-form.setAttribute("method", "post");
-document.body.appendChild(form);
-
-/*Form to select URL to review from possible URLs.
+/*Dropdown to select URL to review from possible URLs.
 Currently: retrieves the queue from sync storgae
 Eventually: only shows the URL from the back end db reviewer has been
 selected to assess*/
-const div = document.createElement("div");
-document.querySelector("form").appendChild(div);
+const section = document.createElement("section");
+section.setAttribute('id','url')
+//Add element right after <h1> in the form
+document.querySelector('h1').parentNode.insertBefore(section, document.querySelector('h1').nextSibling);
 const l = document.createElement("label");
 l.setAttribute("for","selectURL");
 l.innerHTML = "Select URL to review"
-document.querySelector("div:last-child").appendChild(l);
+document.querySelector("#url").appendChild(l);
 const dropdown = document.createElement("select");
 dropdown.setAttribute("id","selectURL");
 dropdown.setAttribute("name","selectURL");
@@ -29,7 +24,6 @@ chrome.storage.sync.get(['queue'], function(result) {
     //test
     //console.log(result.queue);
     result.queue.forEach(function(url){
-      //Check that array exists and is not empty
       const option = document.createElement("option");
       const optionText = document.createTextNode(url);
       //Value defines content to be sent to the server
@@ -42,7 +36,7 @@ chrome.storage.sync.get(['queue'], function(result) {
     dropdown.innerHTML = '<option>You have no URL pending review</option>'
   }
 });
-document.querySelector("div:last-child").appendChild(dropdown);
+document.querySelector("#url label").appendChild(dropdown);
 
 /*Form to select URL to review from possible URLs.
 Currently: retrieves the queue from sync storgae
