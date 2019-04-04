@@ -1,3 +1,14 @@
-div {
-  margin-bottom: 2px;
+section {
+  border: 1px solid black;
+  margin: 10px;
+}
+
+.subassessment {
+  border: 1px dotted black;
+  margin: 5px;
+}
+
+#submit {
+  height: 50px;
+  width: 160px;
 }

@@ -1,6 +1,7 @@
 let submission = document.getElementById('submission');
 let review = document.getElementById('review');
 
+//TODO: replace onclick with addEventListener
 submission.onclick = function() {
   //Get all tabs with specified property (active tab of the active window)
   chrome.tabs.query({currentWindow: true, active: true}, function (tabs){

@@ -10,7 +10,7 @@ section.setAttribute('id','url')
 document.querySelector('h1').parentNode.insertBefore(section, document.querySelector('h1').nextSibling);
 const l = document.createElement("label");
 l.setAttribute("for","selectURL");
-l.innerHTML = "Select URL to review"
+l.innerHTML = "Select URL to review "
 document.querySelector("#url").appendChild(l);
 const dropdown = document.createElement("select");
 dropdown.setAttribute("id","selectURL");
@@ -38,7 +38,46 @@ chrome.storage.sync.get(['queue'], function(result) {
 });
 document.querySelector("#url label").appendChild(dropdown);
 
-/*Form to select URL to review from possible URLs.
-Currently: retrieves the queue from sync storgae
-Eventually: only shows the URL from the back end db reviewer has been
-selected to assess*/
+//TODO: replace onclick with addEventListener
+
+//Add subassessment to false claims section
+let addSubassessmentFalse = document.querySelector("#false-claims .add-subassessment");
+addSubassessmentFalse.onclick = function () {
+  let node = document.querySelector("#false-claims .subassessment");
+  nodeCopy = node.cloneNode(true);
+  let parent = document.querySelector("#false-claims");
+  //lastElementChild ignores the white space at the end of #false-claims
+  parent.insertBefore(nodeCopy, parent.lastElementChild);
+};
+
+//Add subassessment to misleading claims section
+let addSubassessmentMisleading = document.querySelector("#misleading-claims .add-subassessment");
+addSubassessmentMisleading.onclick = function () {
+  let node = document.querySelector("#misleading-claims .subassessment");
+  nodeCopy = node.cloneNode(true);
+  let parent = document.querySelector("#misleading-claims");
+  //lastElementChild ignores the white space at the end of #false-claims
+  parent.insertBefore(nodeCopy, parent.lastElementChild);
+};
+
+//Add subassessment to fallacious claims section
+let addSubassessmentFallacious = document.querySelector("#fallacious-claims .add-subassessment");
+addSubassessmentFallacious.onclick = function () {
+  let node = document.querySelector("#fallacious-claims .subassessment");
+  nodeCopy = node.cloneNode(true);
+  let parent = document.querySelector("#fallacious-claims");
+  //lastElementChild ignores the white space at the end of #false-claims
+  parent.insertBefore(nodeCopy, parent.lastElementChild);
+};
+
+//Select all "Add source" buttons
+let addSource = document.querySelectorAll(".add-source");
+//For each button, add an onclick even listener that will append an input if clicked
+addSource.forEach(function(button) {
+  button.onclick = function () {
+    let p = this.parentNode;
+    let node = p.querySelector("input");
+    nodeCopy = node.cloneNode();
+    node.parentNode.insertBefore(nodeCopy, node.nextSibling);
+    }
+  });

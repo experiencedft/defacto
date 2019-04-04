@@ -9,12 +9,13 @@
 
     <form class="" action="" method="post">
       <h1>Assessment form</h1>
-      <section class="false-claims">
+      <section id="false-claims">
         <h2>False claims</h2>
-        <div class="subassesment">
+        <div class="subassessment">
           <p>
-            <label>Quote:</label>
-            <input type="text" name="quote" id="quote" placeholder="Paste here the quote you are disputing">
+            <label>Quote:
+              <textarea class="quote" placeholder="Paste here the quote you are disputing" rows="2" cols="80"></textarea>
+            </label>
           </p>
           <p>
             <label>Explanation:
@@ -28,15 +29,16 @@
             <button type="button" class="add-source">Add source</button>
           </p>
         </div>
-        <button type="button" id="add-subassessment">Add claim</button>
+        <button type="button" class="add-subassessment">Add claim</button>
       </section>
 
-      <section class="misleading-claims">
+      <section id="misleading-claims">
         <h2>Misleading claims</h2>
-        <div class="subassesment">
+        <div class="subassessment">
           <p>
-            <label>Quote:</label>
-            <input type="text" name="quote" id="quote" placeholder="Paste here the quote you are disputing">
+            <label>Quote:
+              <textarea class="quote" placeholder="Paste here the quote you are disputing" rows="2" cols="80"></textarea>
+            </label>
           </p>
           <p>
             <label>Explanation:
@@ -50,16 +52,17 @@
             <button type="button" class="add-source">Add source</button>
           </p>
         </div>
-        <button type="button" id="add-subassessment">Add claim</button>
+        <button type="button" class="add-subassessment">Add claim</button>
       </section>
 
-      <section class="fallacious-claims">
+      <section id="fallacious-claims">
         <h2>Fallacious claims</h2>
         <p>Example of fallacies: straw man fallacy, false dilemma fallacy, ad hominem, circular argument...</p>
-        <div class="subassesment">
+        <div class="subassessment">
           <p>
-            <label>Quote:</label>
-            <input type="text" name="quote" id="quote" placeholder="Paste here the quote you are disputing">
+            <label>Quote:
+              <textarea class="quote" placeholder="Paste here the quote you are disputing" rows="2" cols="80"></textarea>
+            </label>
           </p>
           <p>
             <label>Explanation:
@@ -73,10 +76,11 @@
             <button type="button" class="add-source">Add source</button>
           </p>
         </div>
-        <button type="button" id="add-subassessment">Add claim</button>
+        <button type="button" class="add-subassessment">Add claim</button>
       </section>
+      <button type="button" id="submit">Submit assessment</button>
     </form>
-    
+
   </body>
   <!-- Populate new tab with relevant form -->
   <script src="src/reviewTab.js"></script>
