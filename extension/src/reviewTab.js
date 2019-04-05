@@ -42,32 +42,32 @@ document.querySelector("#url label").appendChild(dropdown);
 
 //Add subassessment to false claims section
 let addSubassessmentFalse = document.querySelector("#false-claims .add-subassessment");
+let nodeFalse = document.querySelector("#false-claims .subassessment");
+nodeFalseCopy = nodeFalse.cloneNode(true);
 addSubassessmentFalse.onclick = function () {
-  let node = document.querySelector("#false-claims .subassessment");
-  nodeCopy = node.cloneNode(true);
   let parent = document.querySelector("#false-claims");
   //lastElementChild ignores the white space at the end of #false-claims
-  parent.insertBefore(nodeCopy, parent.lastElementChild);
+  parent.insertBefore(nodeFalseCopy, parent.lastElementChild);
 };
 
 //Add subassessment to misleading claims section
 let addSubassessmentMisleading = document.querySelector("#misleading-claims .add-subassessment");
+let nodeMisleading = document.querySelector("#misleading-claims .subassessment");
+nodeMisleadingCopy = nodeMisleading.cloneNode(true);
 addSubassessmentMisleading.onclick = function () {
-  let node = document.querySelector("#misleading-claims .subassessment");
-  nodeCopy = node.cloneNode(true);
   let parent = document.querySelector("#misleading-claims");
   //lastElementChild ignores the white space at the end of #false-claims
-  parent.insertBefore(nodeCopy, parent.lastElementChild);
+  parent.insertBefore(nodeMisleadingCopy, parent.lastElementChild);
 };
 
 //Add subassessment to fallacious claims section
 let addSubassessmentFallacious = document.querySelector("#fallacious-claims .add-subassessment");
+let nodeFallacious = document.querySelector("#fallacious-claims .subassessment");
+nodeFallaciousCopy = nodeFallacious.cloneNode(true);
 addSubassessmentFallacious.onclick = function () {
-  let node = document.querySelector("#fallacious-claims .subassessment");
-  nodeCopy = node.cloneNode(true);
   let parent = document.querySelector("#fallacious-claims");
   //lastElementChild ignores the white space at the end of #false-claims
-  parent.insertBefore(nodeCopy, parent.lastElementChild);
+  parent.insertBefore(nodeFallaciousCopy, parent.lastElementChild);
 };
 
 //Select all "Add source" buttons
@@ -76,8 +76,9 @@ let addSource = document.querySelectorAll(".add-source");
 addSource.forEach(function(button) {
   button.onclick = function () {
     let p = this.parentNode;
-    let node = p.querySelector("input");
+    let node = p.querySelector("input:last-child");
     nodeCopy = node.cloneNode();
+    nodeCopy.value = "";
     node.parentNode.insertBefore(nodeCopy, node.nextSibling);
     }
   });
