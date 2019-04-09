@@ -4,6 +4,7 @@
 Currently: retrieves the queue from sync storgae
 Eventually: only shows the URL from the back end db reviewer has been
 selected to assess*/
+
 const section = document.createElement("section");
 section.setAttribute('id','url')
 //Add element right after <h1> in the form
@@ -37,6 +38,8 @@ chrome.storage.sync.get(['queue'], function(result) {
   }
 });
 document.querySelector("#url label").appendChild(dropdown);
+
+//Interactions with the form (addition of form fields)
 
 //TODO: replace onclick with addEventListener
 
@@ -80,5 +83,90 @@ addSource.forEach(function(button) {
     nodeCopy = node.cloneNode();
     nodeCopy.value = "";
     node.parentNode.insertBefore(nodeCopy, node.nextSibling);
-    }
+  };
   });
+
+//Create assessment object and add to local storage (back-end in the future)
+//TODO: replace with addEventListener
+let submit = document.querySelector("#submit");
+
+submit.onclick = function() {
+
+  //Create assessment object
+  let assessment = {
+    falseClaims: {},
+    fallaciousClaims: {},
+    misleadingClaims: {},
+  };
+
+  //Select all false claims subassessment divs
+  let falseSubassessments = document.querySelectorAll("#false-claims .subassessment");
+  //Loop over subassessments to add to assessment object
+  falseSubassessments.forEach(function(subassessment, i) {
+    let temp = {
+      quote:"",
+      explanation: {
+        text: "",
+        sources: [],
+      },
+      votes: 0,
+    };
+    let q = subassessment.querySelector(".quote");
+    let t = subassessment.querySelector(".explanation");
+    let s = subassessment.querySelectorAll(".source");
+    temp.quote = q.value;
+    temp.explanation.text = t.value;
+    s.forEach(function(source, j) {
+      temp.explanation.sources[j] = source.value;
+    });
+    assessment.falseClaims[i] = temp;
+  });
+
+  //Select all misleading claims subassessment divs
+  let misleadingSubassessments = document.querySelectorAll("#misleading-claims .subassessment");
+  //Loop over subassessments to add to assessment object
+  misleadingSubassessments.forEach(function(subassessment, i) {
+    let temp = {
+      quote:"",
+      explanation: {
+        text: "",
+        sources: [],
+      },
+      votes: 0,
+    };
+    let q = subassessment.querySelector(".quote");
+    let t = subassessment.querySelector(".explanation");
+    let s = subassessment.querySelectorAll(".source");
+    temp.quote = q.value;
+    temp.explanation.text = t.value;
+    s.forEach(function(source, j) {
+      temp.explanation.sources[j] = source.value;
+    });
+    assessment.misleadingClaims[i] = temp;
+  });
+
+  //Select all false claims subassessment divs
+  let fallaciousSubassessments = document.querySelectorAll("#fallacious-claims .subassessment");
+  //Loop over subassessments to add to assessment object
+  fallaciousSubassessments.forEach(function(subassessment, i) {
+    let temp = {
+      quote:"",
+      explanation: {
+        text: "",
+        sources: [],
+      },
+      votes: 0,
+    };
+    let q = subassessment.querySelector(".quote");
+    let t = subassessment.querySelector(".explanation");
+    let s = subassessment.querySelectorAll(".source");
+    temp.quote = q.value;
+    temp.explanation.text = t.value;
+    s.forEach(function(source, j) {
+      temp.explanation.sources[j] = source.value;
+    });
+    assessment.fallaciousClaims[i] = temp;
+  });
+
+  console.log(assessment);
+};
