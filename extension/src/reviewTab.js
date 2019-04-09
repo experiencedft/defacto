@@ -49,6 +49,14 @@ let nodeFalse = document.querySelector("#false-claims .subassessment");
 nodeFalseCopy = nodeFalse.cloneNode(true);
 addSubassessmentFalse.onclick = function () {
   let parent = document.querySelector("#false-claims");
+  let button = nodeFalseCopy.querySelector(".add-source");
+  button.onclick = function () {
+    let p = this.parentNode;
+    let node = p.querySelector("input:last-child");
+    nodeCopy = node.cloneNode();
+    nodeCopy.value = "";
+    node.parentNode.insertBefore(nodeCopy, node.nextSibling);
+  };
   //lastElementChild ignores the white space at the end of #false-claims
   parent.insertBefore(nodeFalseCopy, parent.lastElementChild);
 };
@@ -59,6 +67,14 @@ let nodeMisleading = document.querySelector("#misleading-claims .subassessment")
 nodeMisleadingCopy = nodeMisleading.cloneNode(true);
 addSubassessmentMisleading.onclick = function () {
   let parent = document.querySelector("#misleading-claims");
+  let button = nodeMisleadingCopy.querySelector(".add-source");
+  button.onclick = function () {
+    let p = this.parentNode;
+    let node = p.querySelector("input:last-child");
+    nodeCopy = node.cloneNode();
+    nodeCopy.value = "";
+    node.parentNode.insertBefore(nodeCopy, node.nextSibling);
+  };
   //lastElementChild ignores the white space at the end of #false-claims
   parent.insertBefore(nodeMisleadingCopy, parent.lastElementChild);
 };
@@ -69,6 +85,14 @@ let nodeFallacious = document.querySelector("#fallacious-claims .subassessment")
 nodeFallaciousCopy = nodeFallacious.cloneNode(true);
 addSubassessmentFallacious.onclick = function () {
   let parent = document.querySelector("#fallacious-claims");
+  let button = nodeFallaciousCopy.querySelector(".add-source");
+  button.onclick = function () {
+    let p = this.parentNode;
+    let node = p.querySelector("input:last-child");
+    nodeCopy = node.cloneNode();
+    nodeCopy.value = "";
+    node.parentNode.insertBefore(nodeCopy, node.nextSibling);
+  };
   //lastElementChild ignores the white space at the end of #false-claims
   parent.insertBefore(nodeFallaciousCopy, parent.lastElementChild);
 };
