@@ -3,9 +3,10 @@
   "version": "0.1",
   "description": "Peer-review the internet",
   "permissions": ["tabs", "activeTab", "storage"],
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://*.firebase.com https://www.googleapis.com; object-src 'self'",
   "background": {
-    "scripts":["background.js"],
-    "persistent": false
+    "page":"background.html",
+    "persistent": true
   },
   "browser_action": {
     "default_popup": "popup.html",
