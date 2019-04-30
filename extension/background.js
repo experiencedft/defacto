@@ -6,7 +6,11 @@ var config = {
     storageBucket: "defacto-654d7.appspot.com",
     messagingSenderId: "633832248132"
   };
-  firebase.initializeApp(config);
+
+firebase.initializeApp(config);
+var database = firebase.database();
+
+let userID = "";
 
 //Global listener for all popup messages
 chrome.runtime.onMessage.addListener(
@@ -29,27 +33,45 @@ chrome.runtime.onMessage.addListener(
         });
 
       } else if (message.type == "popupLoad"){
-  
+
         //Get current authentication state and tell popup
         let user = firebase.auth().currentUser;
         if (user) {
+          userID = user.uid;
           sendResponse({type: "loggedIn"});
         } else {
           sendResponse({type: "loggedOut"});
         };
 
+      } else if (message.type == "assessmentSubmission") {
+
+        let assessment = message.package;
+          //Push assessment to the assessment reference in the db and get the key
+        let newKey = database.ref("assessment").push(assessment).key;
+        //Add the corresponding metadata
+        //TODO: Set timestamp in the back-end
+        database.ref("metadata").push({author: userID, vote: 0, url: "test", key: newKey, status: "pending"}); 
+
+      } else if (message.type == "urlSubmission") {
+
+        let submission = message.package;
+        database.ref("queue").push({url: submission});
+
       };
-  
-    });
+
+});
   
   
 
   //Tells the popup script when the auth state changes
-  //TODO: Investigate what happens if a profile is deleted from the console
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
+      userID = user.uid;
       chrome.runtime.sendMessage({loginStatus: "loggedIn", type: "authChange"});
     } else {
       chrome.runtime.sendMessage({loginStatus: "loggedOut", type: "authChange"});
     }
   });
+
+  //TODO: Add profile deletion event listener
+  //See https://firebase.google.com/docs/functions/auth-events

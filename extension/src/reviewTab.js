@@ -1,4 +1,4 @@
-//Helper functions
+
 
 /*Dropdown to select URL to review from possible URLs.
 Currently: retrieves the queue from sync storgae
@@ -17,7 +17,7 @@ const dropdown = document.createElement("select");
 dropdown.setAttribute("id","selectURL");
 dropdown.setAttribute("name","selectURL");
 dropdown.required = true; //boolean attribute = reflected property
-//Retrieve from local storage and add options + create dropdown
+//TODO: Fetch data from pending URLs in the Firebase db instead of local storage
 chrome.storage.sync.get(['queue'], function(result) {
   //Check if there is something in queue
   //TODO: move that in the popup.js to throw an alert and avoid opening a tab
@@ -132,8 +132,7 @@ submit.onclick = function() {
       explanation: {
         text: "",
         sources: [],
-      },
-      votes: 0,
+      }
     };
     let q = subassessment.querySelector(".quote");
     let t = subassessment.querySelector(".explanation");
@@ -155,8 +154,7 @@ submit.onclick = function() {
       explanation: {
         text: "",
         sources: [],
-      },
-      votes: 0,
+      }
     };
     let q = subassessment.querySelector(".quote");
     let t = subassessment.querySelector(".explanation");
@@ -178,8 +176,7 @@ submit.onclick = function() {
       explanation: {
         text: "",
         sources: [],
-      },
-      votes: 0,
+      }
     };
     let q = subassessment.querySelector(".quote");
     let t = subassessment.querySelector(".explanation");
@@ -191,6 +188,9 @@ submit.onclick = function() {
     });
     assessment.fallaciousClaims[i] = temp;
   });
-
-  console.log(assessment);
+  
+  chrome.runtime.sendMessage({type: "assessmentSubmission", package: assessment});
+  alert("Assessment submitted");
+  //Reload page without the browser cache
+  location.reload(true);
 };

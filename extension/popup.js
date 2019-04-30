@@ -45,7 +45,7 @@ function makeDeFactoMenu() {
 };
 
 
-//To do when the user clciks on the exntension icon 
+//To do when the user clicks on the exntension icon 
 window.addEventListener('DOMContentLoaded', (_event) => {
   console.log("DOM loaded and parsed");
   //Send a message to background script informing that the page is loaded
@@ -63,21 +63,7 @@ window.addEventListener('DOMContentLoaded', (_event) => {
         //Get all tabs with specified property (active tab of the active window)
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
           var activeTab = tabs[0].url
-          //TODO: plug to the API, currently uses local storage for testing
-          chrome.storage.sync.get(['queue'], function(result) {
-            //If queue is not in sync storage, create it
-            if (result.queue === undefined) {
-              result.queue = [];
-            };
-            //Add active tab URL if not already there
-            if (!(result.queue.includes(activeTab))) {
-            result.queue.push(activeTab);
-            chrome.storage.sync.set(result, function() {
-              //test
-              console.log(result.queue)
-            });
-            };
-          });
+          chrome.runtime.sendMessage({type: "urlSubmission", package: activeTab});
         });
       //  chrome.storage.sync.get(['queue'], function(result) {
       //    console.log(result.queue);
@@ -146,24 +132,11 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
       let submission = document.getElementById('submission');
       let review = document.getElementById('review');
       submission.onclick = function() {
+        console.log("clicked!");
         //Get all tabs with specified property (active tab of the active window)
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
           var activeTab = tabs[0].url
-          //TODO: plug to the API, currently uses local storage for testing
-          chrome.storage.sync.get(['queue'], function(result) {
-            //If queue is not in sync storage, create it
-            if (result.queue === undefined) {
-              result.queue = [];
-            };
-            //Add active tab URL if not already there
-            if (!(result.queue.includes(activeTab))) {
-            result.queue.push(activeTab);
-            chrome.storage.sync.set(result, function() {
-              //test
-              console.log(result.queue)
-            });
-            };
-          });
+          chrome.runtime.sendMessage({type: "urlSubmission", package: activeTab});
         });
       //  chrome.storage.sync.get(['queue'], function(result) {
       //    console.log(result.queue);
