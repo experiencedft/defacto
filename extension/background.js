@@ -49,7 +49,7 @@ chrome.runtime.onMessage.addListener(
           //Push assessment to the assessment reference in the db and get the key
         let newKey = database.ref("assessment").push(assessment).key;
         //Add the corresponding metadata
-        //TODO: Set timestamp in the back-end
+        //TODO: Set timestamp in the back-end and only allow to write if the URL is not already there
         database.ref("metadata").push({author: userID, vote: 0, url: "test", key: newKey, status: "pending"}); 
 
       } else if (message.type == "urlSubmission") {
