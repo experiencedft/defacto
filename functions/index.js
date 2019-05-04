@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-
+const helper = require('./utils');
 
 //When a user signs up, add the UID to the database
 exports.addAccount = functions.auth.user().onCreate((user) => {
@@ -15,9 +15,23 @@ exports.addAccount = functions.auth.user().onCreate((user) => {
 //When a new item is pushed to queue, add the timestamp
 //Also distribute it to a subset of users that are notified
 exports.addTimestampUrl = functions.database.ref('/queue/{pushId}')
-    .onCreate( (snapshot, context) => {
-        const id = context.params.pushId;
-        let newVal = snapshot.val();
-        newVal.timestamp = admin.database.ServerValue.TIMESTAMP;
-        return snapshot.ref.set(newVal);
+    .onCreate( (snapshot) => {
+        timestamp = admin.database.ServerValue.TIMESTAMP;
+        return snapshot.ref.update({"timestamp": timestamp});
+    });
+
+exports.pushToUserQueue = functions.database.ref('/queue/{pushId}')
+    .onCreate( (snapshot) => {
+        let val = snapshot.val();
+        let url = val.url;
+        // Get object containing all users profiles
+        let usersObject = admin.database().ref("/users/");
+        usersObject.once("value", function(usersdb) {
+            let users = usersdb.val();
+            let keys = Object.keys(users);
+            //Order users list randomly and store in selected user array
+            keys = helper.shuffleArray(keys);
+            return admin.database().ref("/users/"+keys[0]+"/userQueue").push(url);
+        });
+        return Promise.resolve("Empty Promise");
     });
