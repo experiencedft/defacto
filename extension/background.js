@@ -57,6 +57,13 @@ chrome.runtime.onMessage.addListener(
         let submission = message.package;
         database.ref("queue").push({url: submission});
 
+      } else if (message.type == "dropdown") {
+        console.log("Dropdwon message received");
+        let user = firebase.auth().currentUser;
+        if (user) {
+          uid = user.uid;
+          sendResponse({"uid": uid});
+        }
       };
 
 });

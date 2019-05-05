@@ -10,11 +10,11 @@ function makeLogInForm() {
   let HTMLstring = "\
     <div> \
       <label>Email</label>\
-      <input id='input-email'>\
+      <input id='input-email' autocomplete='off'>\
     </div> \
     <div>\
       <label>Password</label>\
-      <input id='input-password'>\
+      <input type='password' id='input-password' autocomplete='off'>\
     </div> \
     <button id='log-in'>Sign-in</button>"
   return HTMLstring;
@@ -24,18 +24,18 @@ function makeSignUpForm() {
   let HTMLstring = "\
     <div> \
       <label>Email</label>\
-      <input id='input-email'>\
+      <input id='input-email' autocomplete='off'>\
     </div> \
     <div>\
       <label>Password</label>\
-      <input id='input-password'>\
+      <input type='password' id='input-password' autocomplete='off'>\
     </div> \
     <div>\
     <label>Confirm password</label>\
-    <input id='input-confirm-password'>\
+    <input type='password' id='input-confirm-password' autocomplete='off'>\
     </div> \
     <button id='sign-up'>Sign-up</button>"
-    return HTMLstring;
+  return HTMLstring;
 };
 
 function makeDeFactoMenu() {

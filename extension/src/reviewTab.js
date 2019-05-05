@@ -1,4 +1,13 @@
-
+var config = {
+  apiKey: "AIzaSyBiWzrlcwxigAnXrapXNX2pIp3yj5WFTG4",
+  authDomain: "defacto-654d7.firebaseapp.com",
+  databaseURL: "https://defacto-654d7.firebaseio.com",
+  projectId: "defacto-654d7",
+  storageBucket: "defacto-654d7.appspot.com",
+  messagingSenderId: "633832248132"
+};
+firebase.initializeApp(config);
+var database = firebase.database();
 
 /*Dropdown to select URL to review from possible URLs.
 Currently: retrieves the queue from sync storgae
@@ -17,7 +26,42 @@ const dropdown = document.createElement("select");
 dropdown.setAttribute("id","selectURL");
 dropdown.setAttribute("name","selectURL");
 dropdown.required = true; //boolean attribute = reflected property
-//TODO: Fetch data from pending URLs in the Firebase db instead of local storage
+
+chrome.runtime.sendMessage({type: "dropdown"}, function (response) {
+  const uid = response.uid;
+  console.log("current uid = "+uid);
+  let dbRead = database.ref("/users/"+uid+"/userQueue");
+  dbRead.once('value').then((dbObject) => {
+    console.log("Reading database entry");
+    if (dbObject.exists()) {
+      console.log("Object exists");
+      let userQueue = dbObject.val();
+      console.log(userQueue);
+      Object.keys(userQueue).forEach((uid) => {
+        const url = userQueue[uid].url;
+        console.log(url);
+        const queueID = userQueue[uid].queueID;
+        console.log(queueID);
+        const option = document.createElement("option");
+        const optionText = document.createTextNode(url);
+        //The values to send to server 
+        option.setAttribute("value", url);
+        option.setAttribute("data-queueid", queueID);
+        //The value displayed
+        //TODO: Change with the title of the corresponding URL
+        option.appendChild(optionText);
+        dropdown.appendChild(option);
+        console.log(dropdown);
+      });
+    } else {
+      dropdown.innerHTML = '<option>You have no URL pending review</option>';
+    }
+    return document.querySelector("#url label").appendChild(dropdown);
+  });
+});
+
+
+/*
 chrome.storage.sync.get(['queue'], function(result) {
   //Check if there is something in queue
   //TODO: move that in the popup.js to throw an alert and avoid opening a tab
@@ -38,10 +82,9 @@ chrome.storage.sync.get(['queue'], function(result) {
   }
 });
 document.querySelector("#url label").appendChild(dropdown);
+*/
 
 //Interactions with the form (addition of form fields)
-
-//TODO: replace onclick with addEventListener
 
 //Add subassessment to false claims section
 let addSubassessmentFalse = document.querySelector("#false-claims .add-subassessment");
