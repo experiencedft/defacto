@@ -60,30 +60,6 @@ chrome.runtime.sendMessage({type: "dropdown"}, function (response) {
   });
 });
 
-
-/*
-chrome.storage.sync.get(['queue'], function(result) {
-  //Check if there is something in queue
-  //TODO: move that in the popup.js to throw an alert and avoid opening a tab
-  if(Array.isArray(result.queue) && result.queue.length){
-    //test
-    //console.log(result.queue);
-    result.queue.forEach(function(url){
-      const option = document.createElement("option");
-      const optionText = document.createTextNode(url);
-      //Value defines content to be sent to the server
-      option.setAttribute("value", url);
-      //Content of option = what is displayed
-      option.appendChild(optionText);
-      dropdown.appendChild(option);
-    });
-  } else {
-    dropdown.innerHTML = '<option>You have no URL pending review</option>'
-  }
-});
-document.querySelector("#url label").appendChild(dropdown);
-*/
-
 //Interactions with the form (addition of form fields)
 
 //Add subassessment to false claims section
@@ -231,8 +207,15 @@ submit.onclick = function() {
     });
     assessment.fallaciousClaims[i] = temp;
   });
-  
-  chrome.runtime.sendMessage({type: "assessmentSubmission", package: assessment});
+  let dropdown = document.querySelector("#selectURL");
+  let url = dropdown.value;
+  let queueID = dropdown.options[dropdown.selectedIndex].getAttribute("data-queueid");
+  chrome.runtime.sendMessage({
+    type: "assessmentSubmission", 
+    "assessment": assessment, 
+    "queueID": queueID, 
+    "url": url
+  });
   alert("Assessment submitted");
   //Reload page without the browser cache
   location.reload(true);

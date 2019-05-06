@@ -45,12 +45,20 @@ chrome.runtime.onMessage.addListener(
 
       } else if (message.type == "assessmentSubmission") {
 
-        let assessment = message.package;
-          //Push assessment to the assessment reference in the db and get the key
+        let assessment = message.assessment;
+        //Push assessment to the assessment reference in the db and get the key
         let newKey = database.ref("assessment").push(assessment).key;
         //Add the corresponding metadata
-        //TODO: Set timestamp in the back-end and only allow to write if the URL is not already there
-        database.ref("metadata").push({author: userID, vote: 0, url: "test", key: newKey, status: "pending"}); 
+        //TODO: Set the metadata in a cloud function (users shouldn't tamper with it)
+        //DON'T FORGET TO CHANGE THE RULES: remove write authorization to the metadata subtree
+        database.ref("metadata").push({
+          author: userID, 
+          vote: 0, 
+          url: message.url, 
+          queueID: message.queueID,
+          key: newKey, 
+          status: "pending"
+        }); 
 
       } else if (message.type == "urlSubmission") {
 
