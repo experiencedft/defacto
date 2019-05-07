@@ -39,3 +39,45 @@ exports.pushToUserQueue = functions.database.ref('/queue/{pushId}')
         });
         return Promise.resolve("Empty Promise");
     });
+
+exports.scheduledFunction = functions.pubsub.schedule("every 2 minutes").onRun((context) => {
+    console.log("This will be run every minute!");
+    currentTime = Date.now();
+    console.log("Current time is "+currentTime);
+    let dbRead = admin.database().ref("/queue/");
+    //Read queue
+    dbRead.once('value', function (dbSnapshot) {
+        console.log("Reading queue...");
+        let queue = dbSnapshot.val();
+        Object.keys(queue).forEach((id) => {
+            console.log("Reading queue element "+id);
+            //TODO: Change from 240 seconds to 48H (convert in ms)
+            if (queue[id].timestamp < currentTime - 240000) {
+                console.log(id + " element is too old");
+                let usersDb = admin.database().ref("/users/");
+                //Read users list
+                usersDb.once('value', function(usersSnapshot) {
+                    console.log("Reading user list");
+                    let users = usersSnapshot.val();
+                    //For each user, check every element in its queue
+                    Object.keys(users).forEach((uid)=> {
+                        console.log("Reading user " + uid);
+                        let userQueue = users[uid].userQueue;
+                        Object.keys(userQueue).forEach((userQueueID) => {
+                            if (userQueue[userQueueID].queueID == id) {
+                                console.log("Delete the element that is too old from user queue");
+                                admin.database().ref("/users/"+uid+"/userQueue/"+userQueueID).remove().then(() => {console.log("Remove success")});
+                                admin.database().ref("/queue/"+id).remove().then(() => {console.log("Remove success")});
+                                //Add URL to a list of assessed URLs
+                            }
+                        });
+                    });
+                    return Promise.resolve("Empty Promise");
+                });
+            }
+        });
+        return Promise.resolve("Empty Promise");
+    });
+    console.log("This is read second.");
+    return Promise.resolve("Empty Promise");
+});
