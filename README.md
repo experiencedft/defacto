@@ -1,23 +1,39 @@
 # DeFacto MVP
 
-This is the repository for the development of the DeFacto MVP.
+This is the repository for a minimally (really minimally) viable iteration of the DeFacto internet peer-review extension.
 
-## What is DeFacto?
+## What does DeFacto aim to be?
 
-DeFacto is a project that aims to combat misinformation online. Anyone can install the browser extension and enjoy reading an assessment of the content of any web page.
+DeFacto is a project that aims to combat misinformation online. The end goal is to make available a browser extension that will provide an assessment overlay for users on the entire internet. The underlying infrastructure will be entirely autonomous, meaning that no central authority or "trusted" third parties will decide what is true or false. Rather, the verification of online content for false claims, misleading claims or fallacious claims will be crowdsourced and the system will be secured using a robust Sybil-proof reputation system. As some readers will note, this is not an easy task, but we want to give it our best.
 
-## Who writes the assessments?
+## What does the MVP currently do?
 
-DeFacto is a permissionless collaborative network. This means that anyone can join to participate in peer-reviewing the internet. Eventually, the combination of a built-in reputation and online voting system will make sure that the content cannot be easily manipulated.
+The current iteration is extremely basic and should not be seen as representative of the final product we have in mind. It is merely intended to give an idea of what the user experience could look like to an extent. Right now, the features are:
 
-## Why should I install the extension?
+* Account creation (Firebase email + password authentication)
+* URL submission for assessment
+* Assignment of a given URL to a random selection of users 
+* Users can assess new items in their queue for 48 hours
+* The extension popup displays a random assessment for the current tab's URL if one exists
 
-It is estimated that the amount of false information could exceed trustworthy information on the internet by the end of the decade. It is important to have tools at our disposal that helps us see through inaccurate content.
+There is no curation mechanism, there are some bugs, and the UI is *really* bad. We are aware of that. This is just a modest beginning.
 
-## Why should I become a reviewer?
+## How can I help?
 
-The DeFacto system cannot work without the help of a network of reviewers. However, content assessment can be a complex task. This is why honest reviewers (defined elsewhere) are rewarded with tokens that can be redeemed for real world money.
+In the following months, we will iterate with new versions of the extension and experiment with several subsystems. If you would like to help, you can join discussion on our [Discord](https://discord.gg/NQhrQ8y) server, feedback about what we are trying to achieve is welcome.
 
-## What does this MVP do?
+## But what's next exactly?
 
-This MVP is a simple implementation that is mainly aimed at experimenting with the user experience. A lot of development work is still required to fulfill our full vision. Stay tuned for updates!
+Below is a list of things we would like to implement and test:
+
+* A voting system to curate assessments
+* A reputation system 
+* Peer-to-peer architecture
+* A reward mechanism for good actors
+* And more...
+
+We will be sharing more details about our roadmap gradually.
+
+## How do I install the extension?
+
+Head into the extension folder and follow the instructions in the README file there.
