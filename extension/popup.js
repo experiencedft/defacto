@@ -1,4 +1,4 @@
-//Helper functions to build the HTML 
+//Helper functions to build the HTML content of the popup
 
 function makeSignInMenu() {
   let HTMLstring = "<button id='sign-up'>Sign-up</button>\
@@ -44,38 +44,75 @@ function makeDeFactoMenu() {
   return HTMLstring;
 };
 
+function makeAssessmentTemplate() {
+  let HTLMLstring = "<p><span id='false-claims'></span> false claims</p>\
+  <p><span id='misleading-claims'></span> misleading claims</p>\
+  <p><span id='fallacious-claims'></span> fallacious claims</p>\
+  <a id='assessment-details' href='#'>See details<a>";
+  return HTLMLstring;
+};
 
-//To do when the user clicks on the exntension icon 
+//To do when the user clicks on the extension icon 
 window.addEventListener('DOMContentLoaded', (_event) => {
   console.log("DOM loaded and parsed");
   //Send a message to background script informing that the page is loaded
   chrome.runtime.sendMessage({type: "popupLoad"}, function (response) {
     //Background script tells us whether the user is logged in
     if (response.type == "loggedIn") {
-
-      //Create HTML of DeFacto UI
-      let container = document.querySelector("#container");
+      //Display random assessment of the page if it exists 
+      //Say no assessment exists otherwise
+      if (response.isAssessed == "yes") {
+        const assessment = response.content;
+        //Set assessemnt in local storage if the user asks for details
+        chrome.storage.sync.set({currentAssessment: assessment}, function() {
+          console.log('Assessment is set in local storage to:');
+          console.log(assessment);
+        });
+        //Display number of false, misleading and fallacious claims 
+        const assessmentContainer = document.querySelector("#assessment-container");
+        assessmentContainer.innerHTML = makeAssessmentTemplate();
+        const falseClaimsNumber = Object.keys(assessment.falseClaims).length;
+        const misleadingClaimsNumber = Object.keys(assessment.misleadingClaims).length;
+        const fallaciousClaimsNumber = Object.keys(assessment.fallaciousClaims).length;
+        let falseClaimsElem = document.querySelector("#false-claims");
+        falseClaimsElem.innerHTML = falseClaimsNumber.toString();
+        let misleadingClaimsElem = document.querySelector("#misleading-claims");
+        misleadingClaimsElem.innerHTML = misleadingClaimsNumber.toString();
+        let fallaciousClaimsElem = document.querySelector("#fallacious-claims");
+        fallaciousClaimsElem.innerHTML = fallaciousClaimsNumber.toString();
+        //Add event listener to details link
+        const detailsElem = document.querySelector("#assessment-details");
+        detailsElem.onclick = function() {
+          chrome.tabs.create({url: "assessmentDetails.html"});
+        };
+      } else if (response.isAssessed == "no") {
+        const assessmentContainer = document.querySelector("#assessment-container");
+        assessmentContainer.innerHTML = "<p>Not assessed yet</p>";
+      }
+      //Create submissions and review buttons
+      //TODO: Don't make a submission button if an assessment is displayed 
+      //OR if queue is non empty
+      let container = document.querySelector("#buttons-container");
       container.innerHTML = makeDeFactoMenu();
       //Add event listeners
       let submission = document.getElementById('submission');
       let review = document.getElementById('review');
+      //Add to database when submit button clicked
       submission.onclick = function() {
         //Get all tabs with specified property (active tab of the active window)
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
           var activeTab = tabs[0].url
           chrome.runtime.sendMessage({type: "urlSubmission", package: activeTab});
         });
-      //  chrome.storage.sync.get(['queue'], function(result) {
-      //    console.log(result.queue);
-      //  });
       };
+      //Open review panel in new tab when review button clicked
       review.onclick = function() {
         chrome.tabs.create({url: "reviewTab.html"});
       };
 
     } else if (response.type == "loggedOut") {
 
-      let container = document.querySelector("#container");
+      let container = document.querySelector("#buttons-container");
       container.innerHTML = makeSignInMenu();
       //Add on click event listener to log-in button
       let logInButton = document.querySelector("#log-in");
@@ -110,7 +147,8 @@ window.addEventListener('DOMContentLoaded', (_event) => {
             //Send crendentials to background script;
             chrome.runtime.sendMessage(credentials)
           } else {
-            //TO DO: Tell user that the passwords don't match
+            errorBox = document.querySelector("#error-container");
+            errorBox.innerHTML('<p style="color: red;">Passwords don\'t match</p>');
           }
         };
       };
@@ -124,13 +162,18 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
   if (message.type == "authChange") {
 
     if (message.loginStatus == "loggedIn") {
+      //Display random assessment of the page if it exists
 
-      //Create HTML of DeFacto UI
-      let container = document.querySelector("#container");
+      //Say no assessment exists otherwise
+
+      //Create submissions and review buttons
+      //TODO: Don't make a submission button if an assessment is displayed
+      let container = document.querySelector("#buttons-container");
       container.innerHTML = makeDeFactoMenu();
       //Add event listeners
       let submission = document.getElementById('submission');
       let review = document.getElementById('review');
+      //Add to database when submit button clicked
       submission.onclick = function() {
         console.log("clicked!");
         //Get all tabs with specified property (active tab of the active window)
@@ -138,10 +181,9 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
           var activeTab = tabs[0].url
           chrome.runtime.sendMessage({type: "urlSubmission", package: activeTab});
         });
-      //  chrome.storage.sync.get(['queue'], function(result) {
-      //    console.log(result.queue);
-      //  });
+
       };
+      //Open review panel in new tab when review button clicked
       review.onclick = function() {
         chrome.tabs.create({url: "reviewTab.html"});
       };
@@ -149,7 +191,7 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
     } else if (message.loginStatus == "loggedOut") {
 
       //If user logs out, re-build the sign-in page
-      let container = document.querySelector("#container");
+      let container = document.querySelector("#buttons-container");
       container.innerHTML = makeSignInMenu();
       //Add on click event listener to log-in button
       let logInButton = document.querySelector("#log-in");

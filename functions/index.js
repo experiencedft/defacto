@@ -40,8 +40,8 @@ exports.pushToUserQueue = functions.database.ref('/queue/{pushId}')
         return Promise.resolve("Empty Promise");
     });
 
-exports.scheduledFunction = functions.pubsub.schedule("every 2 minutes").onRun((context) => {
-    console.log("This will be run every minute!");
+exports.scheduledFunction = functions.pubsub.schedule("every 6 hours").onRun((context) => {
+    console.log("This is executed first");
     currentTime = Date.now();
     console.log("Current time is "+currentTime);
     let dbRead = admin.database().ref("/queue/");
@@ -51,8 +51,8 @@ exports.scheduledFunction = functions.pubsub.schedule("every 2 minutes").onRun((
         let queue = dbSnapshot.val();
         Object.keys(queue).forEach((id) => {
             console.log("Reading queue element "+id);
-            //TODO: Change from 240 seconds to 48H (convert in ms)
-            if (queue[id].timestamp < currentTime - 240000) {
+            //If an item in queue is older than 48 hours (in ms)
+            if (queue[id].timestamp < currentTime - 172800000) {
                 console.log(id + " element is too old");
                 let usersDb = admin.database().ref("/users/");
                 //Read users list
@@ -73,11 +73,13 @@ exports.scheduledFunction = functions.pubsub.schedule("every 2 minutes").onRun((
                         });
                     });
                     return Promise.resolve("Empty Promise");
-                });
+                }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                  });
             }
         });
         return Promise.resolve("Empty Promise");
     });
-    console.log("This is read second.");
+    console.log("This is executed second");
     return Promise.resolve("Empty Promise");
 });

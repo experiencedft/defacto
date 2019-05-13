@@ -209,6 +209,7 @@ submit.onclick = function() {
   });
   let dropdown = document.querySelector("#selectURL");
   let url = dropdown.value;
+  assessment.url = url;
   let queueID = dropdown.options[dropdown.selectedIndex].getAttribute("data-queueid");
   chrome.runtime.sendMessage({
     type: "assessmentSubmission", 

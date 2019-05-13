@@ -12,6 +12,15 @@ var database = firebase.database();
 
 let userID = "";
 
+//Helper function
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 //Global listener for all popup messages
 chrome.runtime.onMessage.addListener(
     function(message, sender, sendResponse) {
@@ -35,10 +44,42 @@ chrome.runtime.onMessage.addListener(
       } else if (message.type == "popupLoad"){
 
         //Get current authentication state and tell popup
+        //plus send some additional info
         let user = firebase.auth().currentUser;
         if (user) {
           userID = user.uid;
-          sendResponse({type: "loggedIn"});
+          //Get current URL (async function)
+          chrome.tabs.query({
+            active: true,
+            currentWindow: true
+          }, function(tabs) {
+            var tab = tabs[0];
+            var url = tab.url;
+             //Read assessments and look for all assessments with the corresponding URL
+            //TODO: Find a way to replace with a read of the metadata to have to load less data
+            let assessment  = {};
+            let isAssessment = 0;
+            console.log("IM HERE FIRST");
+            database.ref("/assessment/").once("value").then(function(snapshot) {
+              console.log("IM HERE THIRD");
+              let assessmentsList = snapshot.val();
+              let temp = [];
+              Object.keys(assessmentsList).forEach((id) => {
+                if (assessmentsList[id].url == url) {
+                  temp.push(assessmentsList[id]);
+                  isAssessment++;
+                };
+                assessment = shuffleArray(temp)[0];
+              });
+              if (isAssessment == 0) {
+                sendResponse({type: "loggedIn", isAssessed: "no"});
+              } else {
+                sendResponse({type: "loggedIn", isAssessed: "yes", "content": assessment});
+              }
+            });
+          });
+          //If the sendResponse is inside an async function, need to return true
+          return true;
         } else {
           sendResponse({type: "loggedOut"});
         };
