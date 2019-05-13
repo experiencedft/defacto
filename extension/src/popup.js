@@ -45,7 +45,8 @@ function makeDeFactoMenu() {
 };
 
 function makeAssessmentTemplate() {
-  let HTLMLstring = "<p><span id='false-claims'></span> false claims</p>\
+  let HTLMLstring = "<p>This page contains...</p>\
+  <p><span id='false-claims'></span> false claims</p>\
   <p><span id='misleading-claims'></span> misleading claims</p>\
   <p><span id='fallacious-claims'></span> fallacious claims</p>\
   <a id='assessment-details' href='#'>See details<a>";
