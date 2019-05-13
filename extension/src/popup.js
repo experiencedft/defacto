@@ -169,6 +169,7 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
 
       //Create submissions and review buttons
       //TODO: Don't make a submission button if an assessment is displayed
+      //OR if queue is non-empty
       let container = document.querySelector("#buttons-container");
       container.innerHTML = makeDeFactoMenu();
       //Add event listeners
@@ -212,8 +213,6 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
         };
       }
     };
-
-  } else if (message.type == "dummy") {
 
   };
 });
