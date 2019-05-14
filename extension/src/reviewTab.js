@@ -129,8 +129,8 @@ addSource.forEach(function(button) {
   };
   });
 
-//Create assessment object and add to back-end db
-
+//Create assessment object and add to local storage (back-end in the future)
+//TODO: replace with addEventListener
 let submit = document.querySelector("#submit");
 
 submit.onclick = function() {
