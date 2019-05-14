@@ -32,13 +32,13 @@ chrome.runtime.onMessage.addListener(
                     "from a content script:" + sender.tab.url :
                     "from the extension"); */
         firebase.auth().signInWithEmailAndPassword(message.email, message.password).catch(function(error) {
-            //TODO: add error message if wrong email/password
+            sendResponse({error: "yes"});
         });
   
       } else if (message.type == "signUpAttempt") {
 
         firebase.auth().createUserWithEmailAndPassword(message.email, message.password).catch(function(error) {
-            //TODO: add error if there is a sign-up issue (email already used for example...)
+            sendResponse({error: "yes"});
         });
 
       } else if (message.type == "popupLoad"){
@@ -114,7 +114,7 @@ chrome.runtime.onMessage.addListener(
           sendResponse({"uid": uid});
         }
       };
-
+      return true;
 });
   
   

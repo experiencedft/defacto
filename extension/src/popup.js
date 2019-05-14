@@ -126,10 +126,15 @@ window.addEventListener('DOMContentLoaded', (_event) => {
           credentials.email = document.querySelector("#input-email").value;
           credentials.password = document.querySelector("#input-password").value;
           credentials.type = "loginAttempt";
-          container.innerHTML = "loading...";
           //Send crendentials to background script;
-          chrome.runtime.sendMessage(credentials)
-
+          chrome.runtime.sendMessage(credentials, function (response) {
+            if (response.error == "yes") {
+              errorBox = document.querySelector("#error-container");
+              errorBox.innerHTML = '<p style="color: red;">Wrong credentials.</p>';
+            } else {
+              container.innerHTML = "loading...";
+            };
+          });
         };
       };
       //Add on click even listener to the sign-up button
@@ -144,12 +149,18 @@ window.addEventListener('DOMContentLoaded', (_event) => {
             credentials.email = document.querySelector("#input-email").value;
             credentials.password = document.querySelector("#input-password").value;
             credentials.type = "signUpAttempt";
-            container.innerHTML = "loading...";
             //Send crendentials to background script;
-            chrome.runtime.sendMessage(credentials)
+            chrome.runtime.sendMessage(credentials, function (response) {
+              if (response.error == "yes") {
+                errorBox = document.querySelector("#error-container");
+                errorBox.innerHTML = '<p style="color: red;">Something went wrong. Verify that you are using a valid email address.</p>';
+              } else {
+                container.innerHTML = "loading...";
+              }
+            });
           } else {
             errorBox = document.querySelector("#error-container");
-            errorBox.innerHTML('<p style="color: red;">Passwords don\'t match</p>');
+            errorBox.innerHTML = '<p style="color: red;">Passwords don\'t match.</p>';
           }
         };
       };
