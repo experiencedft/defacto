@@ -31,3 +31,4 @@ If you are assigned an URL to assess, you have 48 hours to do so before it is re
 * It is possible to submit an URL that already has exisiting assessments.
 * URLs can be added to the queue of the person who submitted them.
 * No error messages when login fails
+* Users can write to metadatas

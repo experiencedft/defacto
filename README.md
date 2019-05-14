@@ -15,6 +15,7 @@ The current iteration is extremely basic and should not be seen as representativ
 * Assignment of a given URL to a random selection of users 
 * Users can assess new items in their queue for 48 hours
 * The extension popup displays a random assessment for the current tab's URL if one exists
+* The identity of the assessor is kept secret from the users
 
 There is no curation mechanism, there are some bugs, and the UI is *really* bad. We are aware of that. This is just a modest beginning.
 
