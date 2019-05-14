@@ -55,7 +55,7 @@ chrome.storage.sync.get(["currentAssessment"], function(result) {
     });
     //Populate misleading claims section
     Object.keys(misleadingClaims).forEach((index) => {
-        const misleadingClaimsContainer = document.querySelector("#false-claims-container");
+        const misleadingClaimsContainer = document.querySelector("#misleading-claims-container");
         //Make a div for the claim to be added
         const claimDiv = makeClaimDiv();
         const claimDivString = "claim-div-"+index; 
@@ -77,7 +77,7 @@ chrome.storage.sync.get(["currentAssessment"], function(result) {
     });
     //Populate fallacious claims section
     Object.keys(fallaciousClaims).forEach((index) => {
-        const fallaciousClaimsContainer = document.querySelector("#false-claims-container");
+        const fallaciousClaimsContainer = document.querySelector("#fallacious-claims-container");
         //Make a div for the claim to be added
         const claimDiv = makeClaimDiv();
         const claimDivString = "claim-div-"+index; 
