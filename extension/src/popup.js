@@ -163,31 +163,8 @@ chrome.runtime.onMessage.addListener( function(message, _sender, _sendResponse) 
   if (message.type == "authChange") {
 
     if (message.loginStatus == "loggedIn") {
-      //Display random assessment of the page if it exists
-
-      //Say no assessment exists otherwise
-
-      //Create submissions and review buttons
-      //TODO: Don't make a submission button if an assessment is displayed
-      let container = document.querySelector("#buttons-container");
-      container.innerHTML = makeDeFactoMenu();
-      //Add event listeners
-      let submission = document.getElementById('submission');
-      let review = document.getElementById('review');
-      //Add to database when submit button clicked
-      submission.onclick = function() {
-        console.log("clicked!");
-        //Get all tabs with specified property (active tab of the active window)
-        chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-          var activeTab = tabs[0].url
-          chrome.runtime.sendMessage({type: "urlSubmission", package: activeTab});
-        });
-
-      };
-      //Open review panel in new tab when review button clicked
-      review.onclick = function() {
-        chrome.tabs.create({url: "reviewTab.html"});
-      };
+      
+      location.reload(true);
 
     } else if (message.loginStatus == "loggedOut") {
 
