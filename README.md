@@ -21,7 +21,7 @@ There is no curation mechanism, there are some bugs, and the UI is *really* bad.
 
 ## How can I help?
 
-In the following months, we will iterate with new versions of the extension and experiment with several subsystems. If you would like to help, you can join discussion on our [Discord](https://discord.gg/NQhrQ8y) server, feedback about what we are trying to achieve is welcome.
+In the following months, we will iterate with new versions of the extension and experiment with several subsystems. If you would like to help, you can join discussion on our [Discord](https://discord.gg/gGspFWh) server, feedback about what we are trying to achieve is welcome.
 
 ## But what's next exactly?
 
