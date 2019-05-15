@@ -9,6 +9,24 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
+//Helper function
+function copyStringToClipboard (str) {
+  // Create new element
+  var el = document.createElement('textarea');
+  // Set value (string to be copied)
+  el.value = str;
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute('readonly', '');
+  el.style = {position: 'absolute', left: '-9999px'};
+  document.body.appendChild(el);
+  // Select text inside element
+  el.select();
+  // Copy text to clipboard
+  document.execCommand('copy');
+  // Remove temporary element
+  document.body.removeChild(el);
+}
+
 /*Dropdown to select URL to review from possible URLs.
 Currently: retrieves the queue from sync storgae
 Eventually: only shows the URL from the back end db reviewer has been
@@ -56,9 +74,35 @@ chrome.runtime.sendMessage({type: "dropdown"}, function (response) {
     } else {
       dropdown.innerHTML = '<option>You have no URL pending review</option>';
     }
-    return document.querySelector("#url label").appendChild(dropdown);
+
+    document.querySelector("#url label").appendChild(dropdown);
+
+    //Add button to copy URL
+    let select = document.querySelector("select");
+    let copyURLbutton = document.createElement("button");
+    copyURLbutton.setAttribute("id","url-link");
+    copyURLbutton.setAttribute("data-link", select.value);
+    copyURLbutton.innerHTML = "Copy URL to clipboard";
+    //Copy data-link attribute content (URL) to clipboard on click
+    copyURLbutton.onclick = (event) => {
+      console.log("I CLICKED THE URL BUTTON");
+      var copyText = event.target.getAttribute("data-link");
+      copyStringToClipboard(copyText);
+      //To prevent reloading the page, no idea why...
+      return false;
+    };
+
+    //On dropdwn value change event
+    //If the dropdown value changes, change the data-link attribute of the button
+    select.addEventListener("change", (event) => {
+      let button = document.querySelector("#url button");
+      button.setAttribute("data-link", event.target.value); 
+    });
+
+    return document.querySelector("#url").appendChild(copyURLbutton);
   });
 });
+
 
 //Interactions with the form (addition of form fields)
 
