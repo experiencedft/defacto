@@ -17,13 +17,13 @@ exports.addAccount = functions.auth.user().onCreate((user) => {
 });
 
 //When a new item is pushed to queue, add the timestamp
-//Also distribute it to a subset of users that are notified
 exports.addTimestampUrl = functions.database.ref('/queue/{pushId}')
     .onCreate( (snapshot) => {
         timestamp = admin.database.ServerValue.TIMESTAMP;
         return snapshot.ref.update({"timestamp": timestamp});
     });
 
+//Assign new URL in queue to a random user for assessment 
 exports.pushToUserQueue = functions.database.ref('/queue/{pushId}')
     .onCreate( (snapshot, context) => {
         let val = snapshot.val();
@@ -44,6 +44,8 @@ exports.pushToUserQueue = functions.database.ref('/queue/{pushId}')
         return Promise.resolve("Empty Promise");
     });
 
+//Every 6 hours, remove URLs that are more than 48H old
+//from queues (global queue and users queue)
 exports.scheduledFunction = functions.pubsub.schedule("every 6 hours").onRun((context) => {
     console.log("This is executed first");
     currentTime = Date.now();
@@ -63,7 +65,7 @@ exports.scheduledFunction = functions.pubsub.schedule("every 6 hours").onRun((co
                 usersDb.once('value', function(usersSnapshot) {
                     console.log("Reading user list");
                     let users = usersSnapshot.val();
-                    //For each user, check every element in its queue
+                    //For each user, check every element in their queue
                     Object.keys(users).forEach((uid)=> {
                         console.log("Reading user " + uid);
                         let userQueue = users[uid].userQueue;
