@@ -7,9 +7,13 @@ const helper = require('./utils');
 //When a user signs up, add the UID to the database
 exports.addAccount = functions.auth.user().onCreate((user) => {
     const id = user.uid;
-    const email = user.email;
+    //Storing email addresses without consent is a breach of GDPR in the EU
+    //const email = user.email;
     console.log(id);
-    return admin.database().ref("/users/"+id).set({"email": email, "uid": id}); 
+    return admin.database().ref("/users/"+id).set({
+        //"email": email, 
+        "uid": id
+    }); 
 });
 
 //When a new item is pushed to queue, add the timestamp
