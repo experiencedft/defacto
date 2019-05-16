@@ -86,20 +86,19 @@ chrome.runtime.onMessage.addListener(
 
       } else if (message.type == "assessmentSubmission") {
 
-        let assessment = message.assessment;
+        const assessment = message.assessment;
         //Push assessment to the assessment reference in the db and get the key
-        let newKey = database.ref("assessment").push(assessment).key;
+        const newKey = database.ref("assessment").push(assessment).key;
         //Add the corresponding metadata
-        //TODO: Set the metadata in a cloud function (users shouldn't tamper with it)
-        //DON'T FORGET TO CHANGE THE RULES: remove write authorization to the metadata subtree
-        database.ref("metadata").push({
+        const metadata = {
           author: userID, 
-          vote: 0, 
-          url: message.url, 
+          votes: 0, 
           queueID: message.queueID,
           key: newKey, 
-          status: "pending"
-        }); 
+        }
+        //TODO: Set the metadata in a cloud function (users shouldn't tamper with it)
+        //DON'T FORGET TO CHANGE THE RULES: remove write authorization to the metadata subtree
+        database.ref("metadata").push(metadata); 
 
       } else if (message.type == "urlSubmission") {
 
